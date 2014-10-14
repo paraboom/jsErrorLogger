@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "PACKAGE_NAME",
+  "name": "jsErrorLogger",
   "version": "0.1.0",
-  "author": "AUTHOR_NAME <AUTHOR_EMAIL>",
-  "description": "DESCRIPTION",
+  "author": "Ivan Shornikov <paraboom@gmail.com>",
+  "description": "Advanced javascript error logger ",
   "devDependencies": {
     "coffee-script": "~1.7.1",
     "mocha": "~1.18.2",
@@ -38,6 +38,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/npm/npm.git"
+    "url": "https://github.com/paraboom/jsErrorLogger"
   }
 }

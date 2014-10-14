@@ -1,12 +1,12 @@
 {
-  "name": "PACKAGE_NAME",
+  "name": "jsErrorLogger",
   "version": "0.1.0",
-  "homepage": "https://github.com/USER/REPO",
+  "homepage": "https://github.com/paraboom/jsErrorLogger",
   "authors": [
-    "AUTHOR_NAME <AUTHOR_EMAIL>"
+    "Ivan Shornikov <paraboom@gmail.com>"
   ],
-  "description": "DESCRIPTION",
-  "main": "build/PACKAGE_NAME.min.js",
+  "description": "Advanced javascript error logger",
+  "main": "build/jserrorlogger.min.js",
 
   "dependencies": {
     "jquery": "",
