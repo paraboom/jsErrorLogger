@@ -100,10 +100,43 @@ window.JsErrorLogger = class
 
       originFn.call(window, wrappedFn, args...)
 
+  # Log recently vistiteed pages and save current one
+  logPageVisit: (store) ->
+    return unless window.localStorage
+
+    store = @_getDefaultStore() unless store
+
+    visitedPages = store.get('visited_pages') || []
+
+    @_logRecentlyVisitedPages(visitedPages) if visitedPages.length > 0
+
+    visitedPages.push(location: window.location.href, time: new Date())
+
+    if visitedPages.length > VISITED_PAGES_LENGTH
+      visitedPages = visitedPages.slice(visitedPages.length - VISITED_PAGES_LENGTH)
+
+    store.set('visited_pages', visitedPages)
+
   ## Private
 
   # Process JS exception.
   _catch: (e) ->
     @processError(e)
+
+  _logRecentlyVisitedPages: (pages) ->
+    @log('Recently visited pages:')
+    @log("#{log.time}: #{log.location}") for log in pages
+
+  _getDefaultStore: ->
+    get: (key) ->
+      value = window.localStorage.getItem(key)
+      try
+        return JSON.parse(value)
+      catch e
+        return value || undefined
+
+    set: (key, val) ->
+      window.localStorage.setItem(key, JSON.stringify(val)) if val?
+      return val
 
 modula.export('js_error_logger', JsErrorLogger)

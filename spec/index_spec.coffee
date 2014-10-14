@@ -101,4 +101,27 @@ describe 'JsErrorLogger', ->
 
       expect(@processFunction).to.be.calledOnce
 
+  describe '#logPageVisit', ->
+
+    beforeEach ->
+      window.localStorage.clear()
+      @jsErrorLogger.addLogger(@jsErrorLogger)
+
+    it 'saves visited pages to store', ->
+      @jsErrorLogger.logPageVisit()
+
+      visitedPagesValue = JSON.parse(window.localStorage.getItem('visited_pages'))
+
+      expect(JSON.parse(window.localStorage.getItem('visited_pages')).length).to.be.eql 1
+
+      @jsErrorLogger.logPageVisit()
+
+      expect(JSON.parse(window.localStorage.getItem('visited_pages')).length).to.be.eql 2
+
+    it 'saves not more than VISITED_PAGES_LENGTH (5) items in store', ->
+      for i in [1..10]
+        @jsErrorLogger.logPageVisit()
+
+      expect(JSON.parse(window.localStorage.getItem('visited_pages')).length).to.be.eql 5
+
 
