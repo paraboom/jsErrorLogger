@@ -1,0 +1,23 @@
+{
+  "name": "PACKAGE_NAME",
+  "version": "0.1.0",
+  "homepage": "https://github.com/USER/REPO",
+  "authors": [
+    "AUTHOR_NAME <AUTHOR_EMAIL>"
+  ],
+  "description": "DESCRIPTION",
+  "main": "build/PACKAGE_NAME.min.js",
+
+  "dependencies": {
+    "jquery": "",
+    "underscore": ""
+  },
+
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}
