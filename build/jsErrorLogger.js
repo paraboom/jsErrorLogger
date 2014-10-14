@@ -138,8 +138,62 @@
       };
     };
 
+    _Class.prototype.logPageVisit = function(store) {
+      var visitedPages;
+      if (!window.localStorage) {
+        return;
+      }
+      if (!store) {
+        store = this._getDefaultStore();
+      }
+      visitedPages = store.get('visited_pages') || [];
+      if (visitedPages.length > 0) {
+        this._logRecentlyVisitedPages(visitedPages);
+      }
+      visitedPages.push({
+        location: window.location.href,
+        time: new Date()
+      });
+      if (visitedPages.length > VISITED_PAGES_LENGTH) {
+        visitedPages = visitedPages.slice(visitedPages.length - VISITED_PAGES_LENGTH);
+      }
+      return store.set('visited_pages', visitedPages);
+    };
+
     _Class.prototype._catch = function(e) {
       return this.processError(e);
+    };
+
+    _Class.prototype._logRecentlyVisitedPages = function(pages) {
+      var log, _i, _len, _results;
+      this.log('Recently visited pages:');
+      _results = [];
+      for (_i = 0, _len = pages.length; _i < _len; _i++) {
+        log = pages[_i];
+        _results.push(this.log("" + log.time + ": " + log.location));
+      }
+      return _results;
+    };
+
+    _Class.prototype._getDefaultStore = function() {
+      return {
+        get: function(key) {
+          var e, value;
+          value = window.localStorage.getItem(key);
+          try {
+            return JSON.parse(value);
+          } catch (_error) {
+            e = _error;
+            return value || void 0;
+          }
+        },
+        set: function(key, val) {
+          if (val != null) {
+            window.localStorage.setItem(key, JSON.stringify(val));
+          }
+          return val;
+        }
+      };
     };
 
     return _Class;
