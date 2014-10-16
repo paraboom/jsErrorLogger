@@ -1,7 +1,7 @@
 /*! jsErrorLogger (v0.1.0),
  Advanced javascript error logger ,
  by Ivan Shornikov <paraboom@gmail.com>
- Tue Oct 14 2014 */
+ Thu Oct 16 2014 */
 (function() {
   var modules;
 
@@ -43,6 +43,12 @@
     function _Class(options) {
       if (options.errorProcessFn && _.isFunction(options.errorProcessFn)) {
         this.errorProcessFn = options.errorProcessFn;
+      }
+      if (options.store) {
+        this.store = options.store;
+      }
+      if (options.dataObject) {
+        this.dataObject = options.dataObject;
       }
       window.onerror = _.bind(this.onError, this);
     }
@@ -89,7 +95,7 @@
     };
 
     _Class.prototype.processError = function(e) {
-      return this.errorProcessFn(e);
+      return typeof this.errorProcessFn === "function" ? this.errorProcessFn(e) : void 0;
     };
 
     _Class.prototype.catchWrap = function(fnOrObj, fnName) {
@@ -138,12 +144,12 @@
       };
     };
 
-    _Class.prototype.logPageVisit = function(store) {
-      var visitedPages;
+    _Class.prototype.logPageVisit = function() {
+      var store, visitedPages;
       if (!window.localStorage) {
         return;
       }
-      if (!store) {
+      if (!this.store) {
         store = this._getDefaultStore();
       }
       visitedPages = store.get('visited_pages') || [];
@@ -160,8 +166,38 @@
       return store.set('visited_pages', visitedPages);
     };
 
+    _Class.prototype._logsDump = function() {
+      return echo.dump();
+    };
+
+    _Class.prototype._stacktrace = function(e) {
+      return printStackTrace({
+        e: e
+      });
+    };
+
+    _Class.prototype._stacktraceDump = function(e) {
+      return JSON.stringify(this._stacktrace(e));
+    };
+
+    _Class.prototype._userAgent = function() {
+      return navigator.userAgent;
+    };
+
+    _Class.prototype._errorData = function(e) {
+      return {
+        name: e.name,
+        level: 'error',
+        msg: e.message,
+        person: (typeof this.dataObject === "function" ? this.dataObject('user') : void 0) || '',
+        data: e.data,
+        stacktrace: this._stacktraceDump(e),
+        logs: this._logsDump()
+      };
+    };
+
     _Class.prototype._catch = function(e) {
-      return this.processError(e);
+      return this.processError(e, this._errorData(e));
     };
 
     _Class.prototype._logRecentlyVisitedPages = function(pages) {
