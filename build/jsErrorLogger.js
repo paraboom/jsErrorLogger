@@ -95,7 +95,7 @@
     };
 
     _Class.prototype.processError = function(e) {
-      return typeof this.errorProcessFn === "function" ? this.errorProcessFn(e) : void 0;
+      return typeof this.errorProcessFn === "function" ? this.errorProcessFn(e, this._errorData(e)) : void 0;
     };
 
     _Class.prototype.catchWrap = function(fnOrObj, fnName) {
@@ -197,7 +197,7 @@
     };
 
     _Class.prototype._catch = function(e) {
-      return this.processError(e, this._errorData(e));
+      return this.processError(e);
     };
 
     _Class.prototype._logRecentlyVisitedPages = function(pages) {

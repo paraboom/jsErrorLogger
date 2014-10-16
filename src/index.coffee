@@ -69,7 +69,7 @@ window.JsErrorLogger = class
     false
 
   processError: (e) ->
-    @errorProcessFn? e
+    @errorProcessFn? e, @_errorData(e)
 
   # Wrap function into try-catch.
   catchWrap: (fnOrObj, fnName) ->
@@ -165,7 +165,7 @@ window.JsErrorLogger = class
 
   # Process JS exception.
   _catch: (e) ->
-    @processError(e, @_errorData(e))
+    @processError(e)
 
   _logRecentlyVisitedPages: (pages) ->
     @log('Recently visited pages:')
