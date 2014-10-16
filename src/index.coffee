@@ -65,7 +65,7 @@ window.JsErrorLogger = class
     false
 
   processError: (e) ->
-    @errorProcessFn e
+    @errorProcessFn? e
 
   # Wrap function into try-catch.
   catchWrap: (fnOrObj, fnName) ->
