@@ -13,6 +13,10 @@ window.JsErrorLogger = class
     if options.errorProcessFn and _.isFunction(options.errorProcessFn)
       @errorProcessFn = options.errorProcessFn
 
+    @store = options.store if options.store
+
+    @dataObject = options.dataObject if options.dataObject
+
     window.onerror = _.bind(@onError, @)
 
   addLogger: (object) ->
@@ -101,10 +105,10 @@ window.JsErrorLogger = class
       originFn.call(window, wrappedFn, args...)
 
   # Log recently vistiteed pages and save current one
-  logPageVisit: (store) ->
+  logPageVisit: ->
     return unless window.localStorage
 
-    store = @_getDefaultStore() unless store
+    store = @_getDefaultStore() unless @store
 
     visitedPages = store.get('visited_pages') || []
 
@@ -119,9 +123,49 @@ window.JsErrorLogger = class
 
   ## Private
 
+  # Returns dump of all saved logs.
+  _logsDump: ->
+    echo.dump()
+
+  # Returns call stack.
+  #
+  # Examples
+  #
+  #   Core.stacktrace()
+  #   # => [
+  #   #      ...
+  #   #      "_.extend.delegateEvents (http://toptal.dev/assets/backbone.js?body=1:1339:24)",
+  #   #      "Framework.View.View.delegateEvents (http://toptal.dev/assets/framework/base/view.js?body=1:81:44)",
+  #   #      "Backbone.View (http://toptal.dev/assets/backbone.js?body=1:1261:10)",
+  #   #      "View (http://toptal.dev/assets/framework/base/view.js?body=1:12:34)",
+  #   #      ...
+  #   #    ]
+  #
+  # Returns array.
+  _stacktrace: (e) ->
+    printStackTrace { e }
+
+  # Returns stringified stacktrace.
+  _stacktraceDump: (e) ->
+    JSON.stringify(@._stacktrace(e))
+
+  # Returns user agent
+  _userAgent: ->
+    navigator.userAgent
+
+  # Returns exception data
+  _errorData: (e) ->
+    name:       e.name
+    level:      'error'
+    msg:        e.message
+    person:     @dataObject?('user') || ''
+    data:       e.data
+    stacktrace: @_stacktraceDump(e)
+    logs:       @_logsDump()
+
   # Process JS exception.
   _catch: (e) ->
-    @processError(e)
+    @processError(e, @_errorData(e))
 
   _logRecentlyVisitedPages: (pages) ->
     @log('Recently visited pages:')

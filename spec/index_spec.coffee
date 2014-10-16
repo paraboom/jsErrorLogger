@@ -3,6 +3,14 @@ JsErrorLogger = modula.require 'js_error_logger'
 describe 'JsErrorLogger', ->
 
   beforeEach ->
+    window.echo =
+      info: sinon.spy()
+      warn: sinon.spy()
+      error: sinon.spy()
+      dump: sinon.spy
+
+    window.printStackTrace = sinon.spy()
+
     @processFunction = sinon.spy()
 
     @jsErrorLogger = new JsErrorLogger {
@@ -22,11 +30,6 @@ describe 'JsErrorLogger', ->
       expect(@tempObject).to.have.ownProperty('log')
 
     it 'delegates logger methods to echo.js methods', ->
-      window.echo =
-        info: sinon.spy()
-        warn: sinon.spy()
-        error: sinon.spy()
-
       @tempObject.info('Error message')
 
       expect(window.echo.info).to.be.calledOnce
