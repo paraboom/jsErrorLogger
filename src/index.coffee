@@ -15,7 +15,7 @@ window.JsErrorLogger = class
 
     @store = options.store if options.store
 
-    @dataObject = options.dataObject if options.dataObject
+    @dataFunction = options.dataFunction if options.dataFunction
 
     window.onerror = _.bind(@onError, @)
 
@@ -108,7 +108,10 @@ window.JsErrorLogger = class
   logPageVisit: ->
     return unless window.localStorage
 
-    store = @_getDefaultStore() unless @store
+    if @store
+      store = @store
+    else
+      store = @_getDefaultStore()
 
     visitedPages = store.get('visited_pages') || []
 
@@ -158,7 +161,7 @@ window.JsErrorLogger = class
     name:       e.name
     level:      'error'
     msg:        e.message
-    person:     @dataObject?('user') || ''
+    person:     @dataFunction?('user') || ''
     data:       e.data
     stacktrace: @_stacktraceDump(e)
     logs:       @_logsDump()
