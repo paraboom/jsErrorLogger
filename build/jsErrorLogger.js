@@ -204,11 +204,11 @@
 
     _Class.prototype._logRecentlyVisitedPages = function(pages) {
       var log, _i, _len, _results;
-      this.log('Recently visited pages:');
+      echo['info']('Recently visited pages:');
       _results = [];
       for (_i = 0, _len = pages.length; _i < _len; _i++) {
         log = pages[_i];
-        _results.push(this.log("" + log.time + ": " + log.location));
+        _results.push(echo['info']("" + log.time + ": " + log.location));
       }
       return _results;
     };

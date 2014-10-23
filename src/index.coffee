@@ -171,8 +171,8 @@ window.JsErrorLogger = class
     @processError(e)
 
   _logRecentlyVisitedPages: (pages) ->
-    @log('Recently visited pages:')
-    @log("#{log.time}: #{log.location}") for log in pages
+    echo['info']('Recently visited pages:')
+    echo['info']("#{log.time}: #{log.location}") for log in pages
 
   _getDefaultStore: ->
     get: (key) ->
