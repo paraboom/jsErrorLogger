@@ -106,7 +106,7 @@ window.JsErrorLogger = class
 
   # Log recently vistiteed pages and save current one
   logPageVisit: ->
-    return unless window.localStorage
+    return false unless @_checkStorage(@store)
 
     if @store
       store = @store
@@ -173,6 +173,17 @@ window.JsErrorLogger = class
   _logRecentlyVisitedPages: (pages) ->
     echo['info']('Recently visited pages:')
     echo['info']("#{log.time}: #{log.location}") for log in pages
+
+  _checkStorage: (store) ->
+    if store and store.enabled
+      return true
+
+    try
+      localStorage.setItem('test', 'test');
+      localStorage.removeItem('test');
+      return true;
+    catch e
+      return false;
 
   _getDefaultStore: ->
     get: (key) ->

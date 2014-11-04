@@ -110,6 +110,14 @@ describe 'JsErrorLogger', ->
       window.localStorage.clear()
       @jsErrorLogger.addLogger(@jsErrorLogger)
 
+    it 'return "false" if localStorage not enabled', ->
+      setItem = sinon.stub localStorage, "setItem", ->
+        throw new Error()
+
+      expect(@jsErrorLogger.logPageVisit()).to.be.eql false
+
+      localStorage.setItem.restore()
+
     it 'saves visited pages to store', ->
       @jsErrorLogger.logPageVisit()
 
