@@ -1,7 +1,7 @@
 /*! jsErrorLogger (v0.1.0),
  Advanced javascript error logger ,
  by Ivan Shornikov <paraboom@gmail.com>
- Thu Oct 23 2014 */
+ Tue Nov 04 2014 */
 (function() {
   var modules;
 
@@ -146,8 +146,8 @@
 
     _Class.prototype.logPageVisit = function() {
       var store, visitedPages;
-      if (!window.localStorage) {
-        return;
+      if (!this._checkStorage(this.store)) {
+        return false;
       }
       if (this.store) {
         store = this.store;
@@ -211,6 +211,21 @@
         _results.push(echo['info']("" + log.time + ": " + log.location));
       }
       return _results;
+    };
+
+    _Class.prototype._checkStorage = function(store) {
+      var e;
+      if (store && store.enabled) {
+        return true;
+      }
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+      } catch (_error) {
+        e = _error;
+        return false;
+      }
     };
 
     _Class.prototype._getDefaultStore = function() {
