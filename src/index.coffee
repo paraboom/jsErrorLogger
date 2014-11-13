@@ -15,8 +15,6 @@ window.JsErrorLogger = class
 
     @store = options.store if options.store
 
-    @dataFunction = options.dataFunction if options.dataFunction
-
     window.onerror = _.bind(@onError, @)
 
   addLogger: (object) ->
@@ -161,7 +159,6 @@ window.JsErrorLogger = class
     name:       e.name
     level:      'error'
     msg:        e.message
-    person:     @dataFunction?('user') || ''
     data:       e.data
     stacktrace: @_stacktraceDump(e)
     logs:       @_logsDump()

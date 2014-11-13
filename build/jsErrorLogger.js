@@ -1,7 +1,7 @@
-/*! jsErrorLogger (v0.1.0),
+/*! jsErrorLogger (v0.1.9),
  Advanced javascript error logger ,
  by Ivan Shornikov <paraboom@gmail.com>
- Tue Nov 04 2014 */
+ Thu Nov 13 2014 */
 (function() {
   var modules;
 
@@ -46,9 +46,6 @@
       }
       if (options.store) {
         this.store = options.store;
-      }
-      if (options.dataFunction) {
-        this.dataFunction = options.dataFunction;
       }
       window.onerror = _.bind(this.onError, this);
     }
@@ -191,7 +188,6 @@
         name: e.name,
         level: 'error',
         msg: e.message,
-        person: (typeof this.dataFunction === "function" ? this.dataFunction('user') : void 0) || '',
         data: e.data,
         stacktrace: this._stacktraceDump(e),
         logs: this._logsDump()
