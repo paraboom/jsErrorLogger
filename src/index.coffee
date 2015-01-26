@@ -21,7 +21,7 @@ window.JsErrorLogger = class
     for level in LOG_LEVELS
       # TODO: Raise exception if some of levels is already defined in object
       # TODO: Find a way to manage custom namespaces and namespace prefixes
-      object[level] = (message) ->
+      object[level] = do (level) -> (message) ->
         echo[level](message)
 
     for alias, level of LOG_LEVEL_ALIASES

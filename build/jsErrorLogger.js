@@ -1,7 +1,7 @@
 /*! jsErrorLogger (v0.1.9),
  Advanced javascript error logger ,
  by Ivan Shornikov <paraboom@gmail.com>
- Thu Nov 13 2014 */
+ Mon Jan 26 2015 */
 (function() {
   var modules;
 
@@ -54,9 +54,11 @@
       var alias, level, _i, _len;
       for (_i = 0, _len = LOG_LEVELS.length; _i < _len; _i++) {
         level = LOG_LEVELS[_i];
-        object[level] = function(message) {
-          return echo[level](message);
-        };
+        object[level] = (function(level) {
+          return function(message) {
+            return echo[level](message);
+          };
+        })(level);
       }
       for (alias in LOG_LEVEL_ALIASES) {
         level = LOG_LEVEL_ALIASES[alias];
