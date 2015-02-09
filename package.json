@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "jsErrorLogger",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "Ivan Shornikov <paraboom@gmail.com>",
   "description": "Advanced javascript error logger ",
   "devDependencies": {
