@@ -84,7 +84,7 @@ window.JsErrorLogger = class
         try
           fn.apply(@, args)
         catch e
-          that._catch e
+          throw e
 
   catchWrapTimer: (obj, fnName) ->
     originFn = obj[fnName]
@@ -98,7 +98,7 @@ window.JsErrorLogger = class
           else
             fn.apply(@, arguments)
         catch e
-          that._catch e
+          throw e
 
       originFn.call(window, wrappedFn, args...)
 

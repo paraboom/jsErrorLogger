@@ -93,14 +93,14 @@ describe 'JsErrorLogger', ->
         myFn: ->
           notExistingFunction()
 
-      try
-        window.setTimeout ->
+      window.setTimeout ->
+        try
           objectWithFn.myFn()
-        , 10
-      catch e
-        window.onerror.call(window, e.toString(), document.location.toString(), 2)
+        catch e
+          window.onerror.call(window, e.toString(), document.location.toString(), 2)
+      , 100
 
-      @clock.tick(20);
+      @clock.tick(200);
 
       expect(@processFunction).to.be.calledOnce
 

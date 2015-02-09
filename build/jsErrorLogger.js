@@ -1,7 +1,7 @@
-/*! jsErrorLogger (v0.1.9),
+/*! jsErrorLogger (v0.1.10),
  Advanced javascript error logger ,
  by Ivan Shornikov <paraboom@gmail.com>
- Mon Jan 26 2015 */
+ Mon Feb 09 2015 */
 (function() {
   var modules;
 
@@ -113,7 +113,7 @@
             return fn.apply(this, args);
           } catch (_error) {
             e = _error;
-            return that._catch(e);
+            throw e;
           }
         };
       }
@@ -136,7 +136,7 @@
             }
           } catch (_error) {
             e = _error;
-            return that._catch(e);
+            throw e;
           }
         };
         return originFn.call.apply(originFn, [window, wrappedFn].concat(__slice.call(args)));
