@@ -16,7 +16,10 @@ projectHeader = "/*! #{p.name} (v#{p.version}),\n
 
 sourceFiles = [
   'src/modula.coffee'
-  'src/index.coffee'
+  'src/yolog.coffee'
+  'src/yolog_src/fn_wrapper.coffee'
+  'src/yolog_src/timer_wrapper.coffee'
+  'src/yolog_src/logger.coffee'
 ]
 
 gulp.task 'build', ['karma:release'], ->

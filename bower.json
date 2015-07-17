@@ -1,12 +1,12 @@
 {
-  "name": "jsErrorLogger",
-  "version": "0.1.11",
+  "name": "Yolog",
+  "version": "0.2.1",
   "homepage": "https://github.com/paraboom/jsErrorLogger",
   "authors": [
     "Ivan Shornikov <paraboom@gmail.com>"
   ],
   "description": "Advanced javascript error logger",
-  "main": "build/jserrorlogger.min.js",
+  "main": "build/yo_log.min.js",
 
   "dependencies": {
     "jquery": "",
