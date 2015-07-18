@@ -1,9 +1,7 @@
 class FnWrapper
 
-  constructor: (obj, fnName) ->
-    @obj = obj
-    @fnName = fnName
-    @originalFn = obj[fnName]
+  constructor: (@obj, @fnName) ->
+    @originalFn = @obj[@fnName]
 
     @obj[@fnName] = (args...) =>
       try

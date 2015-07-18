@@ -1,11 +1,25 @@
 class TimerWrapper
 
-  @create: ->
-    true
+  constructor: (@obj, @fnName) ->
+    @originalFn = @obj[@fnName]
 
-  constructor: ->
-    true
+    @obj[@fnName] = (fn, args...) =>
+      errorCallback = @errorCallback
+      wrappedFn = ->
+        try
+          if typeof fn is 'string'
+            eval(fn)
+          else
+            fn.apply(@, arguments)
+        catch e
+          errorCallback?(e)
+
+      @originalFn.call(window, wrappedFn, args...)
+
+  onError: (fn) ->
+    @errorCallback = fn
 
   reset: ->
+    @obj[@fnName] = @originalFn
 
 modula.export('yolog/timer_wrapper', TimerWrapper)

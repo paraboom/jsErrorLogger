@@ -13,7 +13,6 @@ describe 'FnWrapper', ->
   beforeEach ->
     @errorHandler = sinon.spy()
     @testObject = buggyFunction: -> callUndefinedFunction()
-    sinon.spy(@testObject, 'buggyFunction')
 
   describe '#constructor', ->
     it 'cathes errors, which happen when provided function is called asynchrounously', ->
