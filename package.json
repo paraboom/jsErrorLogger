@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "yolog",
+  "name": "jsErrorLogger",
   "version": "0.2.1",
   "author": "Ivan Shornikov <paraboom@gmail.com>",
   "description": "Advanced javascript error logger ",

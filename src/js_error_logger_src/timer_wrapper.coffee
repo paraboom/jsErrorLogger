@@ -22,4 +22,4 @@ class TimerWrapper
   reset: ->
     @obj[@fnName] = @originalFn
 
-modula.export('yolog/timer_wrapper', TimerWrapper)
+modula.export('js_error_logger/timer_wrapper', TimerWrapper)

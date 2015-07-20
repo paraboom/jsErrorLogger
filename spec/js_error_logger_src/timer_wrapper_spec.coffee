@@ -1,4 +1,4 @@
-TimerWrapper = modula.require 'yolog/timer_wrapper'
+TimerWrapper = modula.require 'js_error_logger/timer_wrapper'
 
 describe 'TimerWrapper', ->
   before ->

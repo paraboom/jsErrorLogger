@@ -13,4 +13,4 @@ class Logger
 
   getLogDump: ->
 
-modula.export('yolog/logger', Logger)
+modula.export('js_error_logger/logger', Logger)

@@ -1,4 +1,4 @@
-Logger = modula.require 'yolog/logger'
+Logger = modula.require 'js_error_logger/logger'
 
 describe 'Logger', ->
 

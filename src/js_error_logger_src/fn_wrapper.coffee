@@ -15,4 +15,4 @@ class FnWrapper
   reset: ->
     @obj[@fnName] = @originalFn
 
-modula.export('yolog/fn_wrapper', FnWrapper)
+modula.export('js_error_logger/fn_wrapper', FnWrapper)

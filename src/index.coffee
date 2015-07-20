@@ -1,4 +1,4 @@
-class @Yolog
+class @JsErrorLogger
 
   @createLogger: (options) ->
     true
@@ -15,4 +15,4 @@ class @Yolog
 
   @reset: ->
 
- modula.export('yolog', Yolog)
+ modula.export('js_error_logger', JsErrorLogger)

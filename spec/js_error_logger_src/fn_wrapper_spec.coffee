@@ -1,4 +1,4 @@
-FnWrapper = modula.require 'yolog/fn_wrapper'
+FnWrapper = modula.require 'js_error_logger/fn_wrapper'
 
 describe 'FnWrapper', ->
   before ->
