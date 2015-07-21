@@ -2,6 +2,12 @@ JsErrorLogger = modula.require 'js_error_logger'
 
 describe 'JsErrorLogger', ->
 
-  describe '.create', ->
-    it 'returns true', ->
-      expect(JsErrorLogger.createLogger()).to.be.true
+  before ->
+    window.printStackTrace = ->
+
+  describe '.onError', ->
+    it 'attaches provided fn to window.onerror', ->
+      testFn = sinon.spy()
+      JsErrorLogger.onError(testFn)
+      window.onerror.call(window)
+      expect(testFn).to.be.calledOnce
