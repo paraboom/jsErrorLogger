@@ -5,6 +5,10 @@ class @JsErrorLogger
   wrappedTimers = []
   originalErrorHandler = window.onerror
 
+  @createLogger: (options = {}) ->
+    @Logger ?= modula.require('js_error_logger/logger')
+    new @Logger(options)
+
   @onError: (fn) ->
     handleFn = fn
     window.onerror = (message, url, line, symbol, e) =>
@@ -38,12 +42,16 @@ class @JsErrorLogger
       stacktrace: printStackTrace({e})
 
   @catchFnErrors: (object, methodName) ->
-    wrappedFn = new FnWrapper(object, methodName)
+    @FnWrapper ?= modula.require('js_error_logger/fn_wrapper')
+
+    wrappedFn = new @FnWrapper(object, methodName)
     wrappedFn.onError(_.bind(@processError, @))
     wrappedFns.push(wrappedFn)
 
   @catchTimerErrors: (object, methodName) ->
-    wrappedTimer = new TimerWrapper(object, methodName)
+    @TimerWrapper ?= modula.require('js_error_logger/timer_wrapper')
+
+    wrappedTimer = new @TimerWrapper(object, methodName)
     wrappedFn.onError(_.bind(@processError, @))
     wrappedTimers.push(wrappedTimer)
 
