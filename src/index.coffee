@@ -1,33 +1,13 @@
-window.JsErrorLogger = class
+printStackTrace = require 'stacktrace-js'
 
-  # Predefined list of levels.
-  LOG_LEVELS = 'info warn error'.split(' ')
+isObject = (obj) ->
+  type = typeof obj
+  type is 'function' or type is 'object' and !!obj
 
-  # Aliases map.
-  LOG_LEVEL_ALIASES =
-    log: 'info'
-
-  VISITED_PAGES_LENGTH = 5
-
+module.exports = class JsErrorLogger
   constructor: (options) ->
-    if options.errorProcessFn and _.isFunction(options.errorProcessFn)
-      @errorProcessFn = options.errorProcessFn
-
-    @store = options.store if options.store
-
-    window.onerror = _.bind(@onError, @)
-
-  addLogger: (object) ->
-    for level in LOG_LEVELS
-      # TODO: Raise exception if some of levels is already defined in object
-      # TODO: Find a way to manage custom namespaces and namespace prefixes
-      object[level] = do (level) -> (message) ->
-        echo[level](message)
-
-    for alias, level of LOG_LEVEL_ALIASES
-      object[alias] = object[level]
-
-    object
+    {@errorProcessFn} = options
+    window.onerror = @onError.bind(@)
 
   # Proccess global exceptions.
   #
@@ -53,7 +33,7 @@ window.JsErrorLogger = class
       #
       # More info: http://stackoverflow.com/a/8938931/75284
       notOurProblem = line is 0
-      messageIsObject = _.isObject(message)
+      messageIsObject = isObject(message)
       hasExceptionObject = e?
 
       unless notOurProblem
@@ -67,13 +47,13 @@ window.JsErrorLogger = class
     false
 
   processError: (e) ->
-    @errorProcessFn? e, @_errorData(e)
+    @errorProcessFn?(e, @_errorData(e))
 
   # Wrap function into try-catch.
   catchWrap: (fnOrObj, fnName) ->
     if fnName
-      obj         = fnOrObj
-      origin      = obj[fnName]
+      obj = fnOrObj
+      origin = obj[fnName]
       obj[fnName] = @catchWrap(origin)
 
     else
@@ -102,31 +82,7 @@ window.JsErrorLogger = class
 
       originFn.call(window, wrappedFn, args...)
 
-  # Log recently vistiteed pages and save current one
-  logPageVisit: ->
-    return false unless @_checkStorage(@store)
-
-    if @store
-      store = @store
-    else
-      store = @_getDefaultStore()
-
-    visitedPages = store.get('visited_pages') || []
-
-    @_logRecentlyVisitedPages(visitedPages) if visitedPages.length > 0
-
-    visitedPages.push(location: window.location.href, time: new Date())
-
-    if visitedPages.length > VISITED_PAGES_LENGTH
-      visitedPages = visitedPages.slice(visitedPages.length - VISITED_PAGES_LENGTH)
-
-    store.set('visited_pages', visitedPages)
-
   ## Private
-
-  # Returns dump of all saved logs.
-  _logsDump: ->
-    echo.dump()
 
   # Returns call stack.
   #
@@ -144,11 +100,11 @@ window.JsErrorLogger = class
   #
   # Returns array.
   _stacktrace: (e) ->
-    printStackTrace { e }
+    printStackTrace {e}
 
   # Returns stringified stacktrace.
   _stacktraceDump: (e) ->
-    JSON.stringify(@._stacktrace(e))
+    JSON.stringify(@_stacktrace(e))
 
   # Returns user agent
   _userAgent: ->
@@ -156,42 +112,12 @@ window.JsErrorLogger = class
 
   # Returns exception data
   _errorData: (e) ->
-    name:       e.name
-    level:      'error'
-    msg:        e.message
-    data:       e.data
+    name: e.name
+    level: 'error'
+    msg: e.message
+    data: e.data
     stacktrace: @_stacktraceDump(e)
-    logs:       @_logsDump()
 
   # Process JS exception.
   _catch: (e) ->
     @processError(e)
-
-  _logRecentlyVisitedPages: (pages) ->
-    echo['info']('Recently visited pages:')
-    echo['info']("#{log.time}: #{log.location}") for log in pages
-
-  _checkStorage: (store) ->
-    if store and store.enabled
-      return true
-
-    try
-      localStorage.setItem('test', 'test');
-      localStorage.removeItem('test');
-      return true;
-    catch e
-      return false;
-
-  _getDefaultStore: ->
-    get: (key) ->
-      value = window.localStorage.getItem(key)
-      try
-        return JSON.parse(value)
-      catch e
-        return value || undefined
-
-    set: (key, val) ->
-      window.localStorage.setItem(key, JSON.stringify(val)) if val?
-      return val
-
-modula.export('js_error_logger', JsErrorLogger)
