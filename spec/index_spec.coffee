@@ -2,8 +2,6 @@ rewire = require 'rewire'
 JsErrorLogger = rewire '../src/index'
 
 describe 'JsErrorLogger', ->
-  before ->
-
   beforeEach ->
     @printStackTrace = sinon.spy()
     @processFunction = sinon.spy()

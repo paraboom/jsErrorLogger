@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "author": "Ivan Shornikov <paraboom@gmail.com>",
   "description": "Advanced javascript error logger ",
+  "main": "build/js_error_logger.min.js",
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-loader": "^0.7.2",
